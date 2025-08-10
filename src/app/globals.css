@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #EA7C69;
+  --color-primary-hover: #F28B78;
+
+  --color-bg: #252836; 
+  --color-surface: #1F1D2B;
+  --color-overlay: rgba(0, 0, 0, 0.7);
+
+  --color-muted: #ABBBC2;
+}
+
+
+html, body { height: 100%; }
+body { @apply bg-[#252836] text-white font-[Poppins,ui-sans-serif,system-ui]; }
+
+
+.container-app { @apply max-w-7xl mx-auto px-4; }
+.input  { @apply bg-bg rounded-xl p-3 outline-none placeholder:text-muted w-full; }
+.badge  { @apply text-xs text-white/60; }
+.btn-glow {
+  box-shadow: 0 8px 30px rgba(250,124,105,0.45);
+}
