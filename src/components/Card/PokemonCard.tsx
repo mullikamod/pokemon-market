@@ -3,38 +3,49 @@ import Image from "next/image";
 import { ShoppingBag } from "lucide-react";
 import Button from "../Button/Button";
 import { useCartStore } from "@/store/cartStore";
+import { useEffect, useRef, useState } from "react";
 
 type PokemonCardProps = { card: PokemonCard };
 
-export default function PokemonCard({ card }: PokemonCardProps) {
+const PokemonCard: React.FC<PokemonCardProps> = ({ card }) => {
   const price = card.cardmarket?.prices?.averageSellPrice ?? 0;
   const setTotal = card.set?.total ?? 0;
 
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(0);
+
   const addItemToCart = useCartStore((state) => state.addItem);
 
- const handleAddToCart = () => {
+  const handleAddToCart = () => {
     addItemToCart(card, 1); // Add 1 quantity of the card
   };
-
+  useEffect(() => {
+    if (cardRef.current) {
+      const width = cardRef.current.offsetWidth;
+      const height = (width * 4) / 3;
+      setHeight(height - 70);
+    }
+  }, []);
   return (
-    <div className="relative flex flex-col">
-      <div className="pt-[calc(93.333%_-_50px)]" />
-      <div
-        className="absolute left-1/2 -translate-x-1/2
+    <div className="flex flex-col">
+      <div className="relative" style={{ height }} >
+        <div ref={cardRef} className="absolute left-1/2 -translate-x-1/2
                w-[70%] aspect-[3/4] overflow-hidden rounded-lg
-               z-1 bottom-40"
-      >
+               z-1 bottom-[-100] py-2"
+        >
 
-        <Image
-          src={card.images.large}
-          alt={card.name}
-          fill
-          sizes="200px"
-          className="object-cover"
-        />
+          <Image
+            src={card.images.large}
+            alt={card.name}
+            fill
+            sizes="200px"
+            className="object-cover"
+          />
+        </div>
       </div>
-      <div className="relative rounded-2xl bg-surface pt-20 pb-6 px-4flex flex-col p-4">
-        <div className="mt-auto text-center text-base font-medium leading-snug tracking-tight">
+      <div className="relative rounded-2xl bg-surface pb-6 px-4 flex flex-col h-full">
+        <div className="h-[70px] mb-2" />
+        <div className="mt-auto text-center text-base font-medium leading-snug tracking-tight pt-2">
           {card.name}
         </div>
 
@@ -55,3 +66,5 @@ export default function PokemonCard({ card }: PokemonCardProps) {
     </div>
   );
 }
+
+export default PokemonCard;
