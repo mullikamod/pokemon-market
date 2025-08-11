@@ -31,7 +31,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ card }) => {
       <div className="relative" style={{ height }} >
         <div ref={cardRef} className="absolute left-1/2 -translate-x-1/2
                w-[70%] aspect-[3/4] overflow-hidden rounded-lg
-               z-1 bottom-[-100] py-2"
+               z-1 top-0 py-2"
         >
 
           <Image
