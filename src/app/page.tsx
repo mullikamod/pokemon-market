@@ -1,10 +1,8 @@
 'use client';
 import CartSidebar from "@/components/Cart/CartSidebar";
 import { useState } from "react";
-import Header from "@/components/Header/header";
-import FilterBar from "@/components/Filters/FilterBar";
-import PokemonCard from "@/components/Card/PokemonCard";
 import ClientSection from "./ClientSection";
+import Header from "@/components/Header/header";
 
 export default function Page() {
   const [openCart, setOpenCart] = useState(false);
