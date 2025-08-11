@@ -12,13 +12,16 @@ type FilterBarProps = {
 
 const FilterBar = ({ options }: FilterBarProps) => {
   return (
-    <div className="flex flex-wrap items-center gap-3 justify-between">
-      <h2 className="text-lg font-semibold">Choose Card</h2>
-      <div className="flex items-center gap-3">
+    <div className="flex items-center gap-3">
+      {options.sets.length > 0 && (
         <FilterSelect label="Set" field="setId" options={options.sets.map((set) => ({ label: set.name, value: set.id }))} />
+      )}
+      {options.rarities.length > 0 && (
         <FilterSelect label="Rarity" field="rarity" options={options.rarities.map((rarity) => ({ label: rarity, value: rarity }))} />
+      )}
+      {options.types.length > 0 && (
         <FilterSelect label="Type" field="type" options={options.types.map((type) => ({ label: type, value: type }))} />
-      </div>
+      )}
     </div>
   );
 }

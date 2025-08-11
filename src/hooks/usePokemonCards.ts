@@ -42,23 +42,43 @@ export type FilterOptions = {
   rarities: string[];
   sets: PokemonSet[];
 };
+export type FilterResult = { data: FilterOptions; errors: FilterOptions };
 
-const fetchFilterOptions = async (): Promise<FilterOptions> => {
-  const [types, rarities, sets] = await Promise.all([
+const fetchFilterOptions = async (): Promise<FilterResult> => {
+  const [typesRes, raritiesRes, setsRes] = await Promise.allSettled([
     api.get("/types"),
     api.get("/rarities"),
     api.get("/sets", { params: { orderBy: "name" } }),
   ]);
-  console.log("Fetched Filter Options:", { types, rarities, sets });
+
+  console.log("Filter Options Results:", {
+    types: typesRes,
+    rarities: raritiesRes,
+    sets: setsRes,
+  });
   
-  if (!types.data || !rarities.data || !sets.data) {
-    throw new Error("Failed to fetch filter options");
-  }
-  return {
-    types: types.data.data as string[],
-    rarities: rarities.data.data as string[],
-    sets: (sets.data.data as PokemonSet[]).map((s) => ({ id: s.id, name: s.name, total: s.total })),
+  const data: FilterOptions = {
+    types:
+      typesRes.status === "fulfilled" ? (typesRes.value.data?.data as string[]) ?? [] : [],
+    rarities:
+      raritiesRes.status === "fulfilled" ? (raritiesRes.value.data?.data as string[]) ?? [] : [],
+    sets:
+      setsRes.status === "fulfilled"
+        ? ((setsRes.value.data?.data) ?? []).map((set: PokemonSet) => ({
+            id: set.id,
+            name: set.name,
+            total: set.total,
+          }))
+        : [],
   };
-}
+
+  const errors = {
+    types: typesRes.status === "rejected" ? typesRes.reason : undefined,
+    rarities: raritiesRes.status === "rejected" ? raritiesRes.reason : undefined,
+    sets: setsRes.status === "rejected" ? setsRes.reason : undefined,
+  };
+
+  return { data, errors };
+};
 
 export { usePokemonCards, fetchFilterOptions };
