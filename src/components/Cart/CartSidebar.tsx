@@ -69,8 +69,8 @@ const clearCart = useCartStore((state) => state.clearCart);
         <div className="p-4 space-y-2 overflow-y-auto h-[calc(100vh-300px)]">
           {itemIds.length > 0 && <div className="grid grid-cols-6 text-sm text-white border-b border-white/8 pb-2 mb-2 gap-2">
             <div className="col-span-1">Item</div>
-            <div className="col-span-4">Price</div>
-            <div className="col-span-1">Qty</div>
+            <div className="col-span-4">Qty</div>
+            <div className="col-span-1">Price</div>
           </div>}
           {itemIds.length === 0 && <div className="text-sm text-muted">Your cart is empty</div>}
           {itemIds.map((id) => (
